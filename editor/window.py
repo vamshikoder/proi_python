@@ -3,10 +3,7 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import (
     QAction,
     QDesktopWidget,
-    QHBoxLayout,
-    QLabel,
     QMainWindow,
-    QWidget,
 )
 
 from editor.widgets import PEditorWidget
