@@ -1,5 +1,4 @@
-from PyQt5.QtCore import QPoint
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import (
     QAction,
     QDesktopWidget,
@@ -7,6 +6,7 @@ from PyQt5.QtWidgets import (
 )
 
 from editor.widgets import PEditorWidget
+import globals
 
 
 class PWindow(QMainWindow):
@@ -24,7 +24,8 @@ class PWindow(QMainWindow):
         self.setCentralWidget(self.peditor_widget)
 
         # * set window title
-        self.setWindowTitle("prgr")
+        self.setWindowTitle("proi")
+        self.setFont(QFont(globals.DEFAULT_FONT))
         # * display the UI
         self.show()
 
@@ -35,26 +36,27 @@ class PWindow(QMainWindow):
 
         # New Option
         action_new = QAction("Show Grid", self)
+        action_new.setFont(QFont(globals.DEFAULT_FONT))
         # action_new.setShortcut("Ctrl+N")
         action_new.setToolTip("Show Grid in the Editor")
         action_new.triggered.connect(self.onClickNew)
         filemenu.addAction(action_new)
 
     def onClickNew(self):
-        self.peditor_widget.grahpic_scene.grid_visible = (
-            not self.peditor_widget.grahpic_scene.grid_visible
+        self.peditor_widget.graphic_scene.grid_visible = (
+            not self.peditor_widget.graphic_scene.grid_visible
         )
-        self.peditor_widget.grahpic_scene.update()
+        self.peditor_widget.graphic_scene.update()
         print("clicked ")
 
     def window_position(self) -> None:
-        # get the display size.
+        # * get the display size.
         display_resolution = QDesktopWidget().screenGeometry(-1)
-        # set the initial window size and position
+        # * set the initial window size and position
         self.setGeometry(
             0, 0, display_resolution.width() / 2, display_resolution.height() / 2
         )
-        # set the window in the middle
+        # * set the window in the middle
         qr = self.frameGeometry()
         cp = QDesktopWidget().availableGeometry().center()
         qr.moveCenter(cp)
