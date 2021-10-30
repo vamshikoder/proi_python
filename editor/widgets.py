@@ -1,43 +1,62 @@
 import math
 from PyQt5.QtWidgets import (
-    QRadioButton,
-    QVBoxLayout,
+    QHBoxLayout,
+    QSplitter,
     QWidget,
     QGraphicsScene,
     QGraphicsView,
 )
 from PyQt5.QtCore import QLine, Qt
-from PyQt5.QtGui import QColor, QPen, QKeyEvent, QPainter, QWheelEvent
+from PyQt5.QtGui import (
+    QColor,
+    QPen,
+    QKeyEvent,
+    QPainter,
+    QWheelEvent,
+)
+
+from editor.code_overview import PCodeOverview
 
 
 class PEditorWidget(QWidget):
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
 
-        self.initUI()
+        self.init_ui()
 
-    def initUI(self):
+    def init_ui(self):
 
         # vertical layout
-        self.layout = QVBoxLayout()
+        self.layout = QHBoxLayout()
         # reomve the default borders
         self.layout.setContentsMargins(0, 0, 0, 0)
         self.setLayout(self.layout)
 
-        # graphics scene
-        self.grahpic_scene = PGraphicsScene()
+        # * graphics scene, the total scene
+        self.graphic_scene = PGraphicsScene()
 
-        # graphics view
-        self.view = PGraphicsView(self.grahpic_scene, self)
-        self.text = QRadioButton(self)
-        self.text.setText("hello")
-        self.text.move(150, 10)
+        # * graphics view, which is currently in the view
 
-        # self.view.setScene(self.grahpic_scene)
-        self.layout.addWidget(self.view)
+        self.view = PGraphicsView(self.graphic_scene, self)
+        # self.layout.addWidget(self.view)
+        self.code_overview = PCodeOverview()
+        # self.layout.addWidget(self.code_overview)
 
-    # 1def addDebugContent(self):
-    #     self.grahpic_scene
+        # * adding a Splitter between codeoverview and graph
+        self.splitter = QSplitter()
+        self.splitter.setOrientation(Qt.Orientation.Horizontal)
+        self.splitter.addWidget(self.view)
+        self.splitter.addWidget(self.code_overview)
+
+        self.layout.addWidget(self.splitter)
+
+        # text = QRadioButton(self)
+        # text.setText("hello")
+        # text.move(150, 100)
+
+        self.view.setScene(self.graphic_scene)
+
+        # self.add_debug_content()
 
 
 class PScene:
@@ -91,7 +110,7 @@ class PGraphicsScene(QGraphicsScene):
         self._pen_dark.setWidth(1)
 
         # * scene height and width
-        self.scene_width, self.scene_height = 6000, 6000
+        self.scene_width, self.scene_height = 1000, 1000
 
         # * scene default position
         self.setSceneRect(
